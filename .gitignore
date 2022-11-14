@@ -1,0 +1,6 @@
+#NodeJS modules
+node_modules
+#Environment
+.env
+config.json
+.DS_Store
