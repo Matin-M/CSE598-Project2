@@ -42,6 +42,12 @@ class PatientRecord extends State {
   }
 
   //TASK 2 - Write a getter and a setter for a field called lastCheckupDate
+  setlastCheckupDate(date) {
+    return (this.lastCheckupDate = date);
+  }
+  getlastCheckupDate() {
+    return this.lastCheckupDate;
+  }
 
   //Helper functions
 

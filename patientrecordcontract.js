@@ -91,13 +91,14 @@ class PatientRecordContract extends Contract {
     );
     //TASK 0
     // Add patient record by calling the method in the PRecordList
-    throw new Error();
+    ctx.patientRecordList.addPRecord(precord);
     return precord.toBuffer();
   }
 
   async getPatientByKey(ctx, username, name) {
     let precordKey = PatientRecord.makeKey([username, name]);
     //TASK-1: Use a method from patientRecordList to read a record by key
+    let precord = await ctx.patientRecordList.getPRecord(precordKey);
     return JSON.stringify(precord);
   }
 
