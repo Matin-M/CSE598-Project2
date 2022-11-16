@@ -91,7 +91,7 @@ class PatientRecordContract extends Contract {
     );
     //TASK 0
     // Add patient record by calling the method in the PRecordList
-    ctx.patientRecordList.addPRecord(precord);
+    await ctx.patientRecordList.addPRecord(precord);
     return precord.toBuffer();
   }
 
@@ -109,13 +109,16 @@ class PatientRecordContract extends Contract {
    * @param {String} name name
    * @param {String} lastCheckupDate date string
    */
-  /*async updateCheckupDate(ctx,username,name,lastCheckupDate){
-        let precordKey = PatientRecord.makeKey([username,name]);
-        //TASK-3: Use a method from patientRecordList to read a record by key
-        //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
-        //Use updatePRecord from patientRecordList to update the record on the ledger
-       return precord.toBuffer();
-    }*/
+  async updateCheckupDate(ctx, username, name, lastCheckupDate) {
+    let precordKey = PatientRecord.makeKey([username, name]);
+    //TASK-3: Use a method from patientRecordList to read a record by key
+    //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
+    //Use updatePRecord from patientRecordList to update the record on the ledger
+    const precord = await ctx.patientRecordList.getPRecord(precordKey);
+    precord.set_last_checkup_date(lastCheckupDate);
+    await ctx.patientRecordList.updatePRecord(precord);
+    return precord.toBuffer();
+  }
 
   /**
    * Evaluate a queryString
@@ -168,11 +171,13 @@ class PatientRecordContract extends Contract {
    * @param {String} gender gender to be queried
    */
   // Graded Function
-  /*async queryByGender(ctx, gender) {
+  async queryByGender(ctx, gender) {
     //      TASK-4: Complete the query String JSON object to query using the genderIndex (META-INF folder)
     //      Construct the JSON couch DB selector queryString that uses genderIndex
     //      Pass the Query string built to queryWithQueryString
- }*/
+    const query = `{\"selector\":{\"gender\":\"${gender}\"}, \"use_index\":[\"_design/genderIndexDoc\", \"genderIndex\"]}`;
+    return await this.queryWithQueryString(ctx, query);
+  }
 
   /**
    * Query by Blood_Type
