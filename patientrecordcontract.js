@@ -186,13 +186,14 @@ class PatientRecordContract extends Contract {
    * @param {String} blood_type blood_type to queried
    */
   // Graded Function
-  /*async queryByBlood_Type(ctx, blood_type) {
+  async queryByBlood_Type(ctx, blood_type) {
     //      TASK-5: Write a new index for bloodType and write a CouchDB selector query that uses it
     //      to query by bloodType
     //      Construct the JSON couch DB selector queryString that uses blood_typeIndex
     //      Pass the Query string built to queryWithQueryString
-
-}*/
+    const query = `{\"selector\":{\"blood_type\":\"${blood_type}\"}, \"use_index\":[\"_design/blood_typeIndexDoc\", \"blood_typeIndex\"]}`;
+    return await this.queryWithQueryString(ctx, query);
+  }
 
   /**
    * Query by Blood_Type Dual Query
