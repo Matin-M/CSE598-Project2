@@ -47,7 +47,7 @@ class PatientRecordContract extends Contract {
   //  Read more about unknownTransaction here: https://hyperledger.github.io/fabric-chaincode-node/master/api/fabric-contract-api.Contract.html
   async unknownTransaction(ctx) {
     // GRADED FUNCTION
-    throw new Error();
+    throw new Error("Function name missing");
   }
 
   async afterTransaction(ctx) {
@@ -115,7 +115,7 @@ class PatientRecordContract extends Contract {
     //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
     //Use updatePRecord from patientRecordList to update the record on the ledger
     const precord = await ctx.patientRecordList.getPRecord(precordKey);
-    precord.set_last_checkup_date(lastCheckupDate);
+    precord.setlastCheckupDate(lastCheckupDate);
     await ctx.patientRecordList.updatePRecord(precord);
     return precord.toBuffer();
   }
@@ -202,14 +202,17 @@ class PatientRecordContract extends Contract {
    * @param {String} blood_type blood_type to queried
    */
   //Grade Function
-  /* async queryByBlood_Type_Dual(ctx, blood_type1, blood_type2) {
+  async queryByBlood_Type_Dual(ctx, blood_type1, blood_type2) {
     //      TASK-6: Write a CouchDB selector query that queries using two blood types
     //      and uses the index created for bloodType
     //      Construct the JSON couch DB selector queryString that uses two blood type indexe
     //      Pass the Query string built to queryWithQueryString
-
-
-}*/
+    const query = {
+      selector: { blood_type: { $in: [blood_type1, blood_type2] } },
+      use_index: ["_design/blood_typeIndexDoc", "blood_typeIndex"],
+    };
+    return await this.queryWithQueryString(ctx, JSON.stringify(query));
+  }
 }
 
 module.exports = PatientRecordContract;
