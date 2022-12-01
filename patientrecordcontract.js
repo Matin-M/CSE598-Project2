@@ -114,10 +114,10 @@ class PatientRecordContract extends Contract {
     //TASK-3: Use a method from patientRecordList to read a record by key
     //Use set_last_checkup_date from PatientRecord to update the last_checkup_date field
     //Use updatePRecord from patientRecordList to update the record on the ledger
-    const precord = await ctx.patientRecordList.getPRecord(precordKey);
+    let precord = await ctx.patientRecordList.getPRecord(precordKey);
     precord.setlastCheckupDate(lastCheckupDate);
     await ctx.patientRecordList.updatePRecord(precord);
-    return precord.toBuffer();
+    return JSON.stringify(precord);
   }
 
   /**
@@ -209,7 +209,7 @@ class PatientRecordContract extends Contract {
     //      Pass the Query string built to queryWithQueryString
     const query = {
       selector: { blood_type: { $in: [blood_type1, blood_type2] } },
-      use_index: ["_design/blood_typeIndexDoc", "blood_typeIndex"],
+      use_index: ["_design/IndexDoc", "blood_typeIndex"],
     };
     return await this.queryWithQueryString(ctx, JSON.stringify(query));
   }
